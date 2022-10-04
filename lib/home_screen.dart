@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie/app/common/colors.dart';
 import 'package:movie/app/common/widgets/banner_widget.dart';
-import 'package:movie/info_movie_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -140,67 +139,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-  // Widget banner({required String title, required String gender, required image}) {
-  //   return InkWell(
-  //     onTap: (() => {
-  //           Navigator.push(
-  //             context,
-  //             MaterialPageRoute(builder: (context) => const InfoMovieScrren()),
-  //           )
-  //         }),
-  //     child: Container(
-  //       height: isSmall ? 470 : 0.0,
-  //       width: 320,
-  //       decoration: BoxDecoration(
-  //         borderRadius: BorderRadius.circular(25),
-  //         image: DecorationImage(
-  //           image: AssetImage(
-  //             image,
-  //           ),
-  //           fit: BoxFit.cover,
-  //           alignment: FractionalOffset.bottomCenter,
-  //           colorFilter: ColorFilter.mode(Colors.grey.shade900.withAlpha(50), BlendMode.darken),
-  //         ),
-  //       ),
-  //       margin: const EdgeInsets.only(
-  //         bottom: 16,
-  //         left: 20,
-  //         right: 20,
-  //       ),
-  //       child: Container(
-  //         decoration: BoxDecoration(
-  //           borderRadius: BorderRadius.circular(25),
-  //           gradient: LinearGradient(
-  //             colors: [
-  //               Colors.transparent,
-  //               Colors.transparent,
-  //               Colors.transparent,
-  //               gray01,
-  //             ],
-  //             begin: Alignment.topCenter,
-  //             end: Alignment.bottomCenter,
-  //           ),
-  //         ),
-  //         child: Padding(
-  //           padding: const EdgeInsets.only(left: 24, bottom: 32),
-  //           child: Column(mainAxisAlignment: MainAxisAlignment.end, crossAxisAlignment: CrossAxisAlignment.start, children: [
-  //             Text(
-  //               title,
-  //               style: TextStyle(color: white, fontFamily: 'Montserrat', fontSize: 14, fontWeight: FontWeight.w600),
-  //             ),
-  //             Padding(
-  //               padding: const EdgeInsets.only(top: 12),
-  //               child: Text(
-  //                 gender,
-  //                 style: TextStyle(color: white, fontFamily: 'Montserrat', fontSize: 10, fontWeight: FontWeight.w400),
-  //               ),
-  //             ),
-  //           ]),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
 }

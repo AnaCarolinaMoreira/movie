@@ -24,6 +24,14 @@ Widget banner({required String title, required String gender, required image, re
           alignment: FractionalOffset.bottomCenter,
           colorFilter: isSmall ? null : ColorFilter.mode(Colors.grey.shade900.withAlpha(50), BlendMode.darken),
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 7,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
       margin: const EdgeInsets.only(
         bottom: 16,
