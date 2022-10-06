@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:movie/app/common/colors.dart';
-
-import '../../../info_movie_screen.dart';
+import 'package:movie/modules/home/presenter/info_movie_screen.dart';
 
 Widget banner({required String title, required String gender, required image, required BuildContext context, bool isSmall = false}) {
   return InkWell(
     onTap: (() => {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const InfoMovieScrren()),
+            MaterialPageRoute(builder: (context) => const DetailMovieScreen()),
           )
         }),
     child: Container(
@@ -22,7 +21,6 @@ Widget banner({required String title, required String gender, required image, re
           ),
           fit: BoxFit.cover,
           alignment: FractionalOffset.bottomCenter,
-          colorFilter: isSmall ? null : ColorFilter.mode(Colors.grey.shade900.withAlpha(50), BlendMode.darken),
         ),
         boxShadow: [
           BoxShadow(
@@ -43,12 +41,11 @@ Widget banner({required String title, required String gender, required image, re
           borderRadius: BorderRadius.circular(25),
           gradient: isSmall
               ? null
-              : LinearGradient(
+              : const LinearGradient(
                   colors: [
                     Colors.transparent,
                     Colors.transparent,
-                    Colors.transparent,
-                    gray01,
+                    Colors.black87,
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,

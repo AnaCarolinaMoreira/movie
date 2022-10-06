@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:movie/app/common/colors.dart';
+import 'package:movie/app/common/widgets/banner_widget.dart';
 
-import 'app/common/widgets/banner_widget.dart';
-
-class InfoMovieScrren extends StatefulWidget {
-  const InfoMovieScrren({super.key});
+class DetailMovieScreen extends StatefulWidget {
+  const DetailMovieScreen({super.key});
 
   @override
-  State<InfoMovieScrren> createState() => _InfoMovieScrrenState();
+  State<DetailMovieScreen> createState() => _DetailMovieScreenState();
 }
 
-class _InfoMovieScrrenState extends State<InfoMovieScrren> {
+class _DetailMovieScreenState extends State<DetailMovieScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +33,7 @@ class _InfoMovieScrrenState extends State<InfoMovieScrren> {
                     const SizedBox(height: 32),
                     RichText(
                       text: TextSpan(
+                        style: const TextStyle(fontFamily: 'Montserrat'),
                         children: <TextSpan>[
                           TextSpan(text: '7.3', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24, color: inside)),
                           TextSpan(text: '/ 10', style: TextStyle(color: gray03)),
@@ -42,7 +42,7 @@ class _InfoMovieScrrenState extends State<InfoMovieScrren> {
                     ),
                     const SizedBox(height: 32),
                     Text(
-                      'Capitã marvel',
+                      'CAPITÃ MARVEL',
                       style: TextStyle(color: gray01, fontFamily: 'Montserrat', fontSize: 14, fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(height: 12),

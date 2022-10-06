@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-//gray scale
+// Grayscale
 Color gray01 = const Color(0xFF343A40);
 Color gray02 = const Color(0xFF5E6770);
 Color gray03 = const Color(0xFF868E96);
