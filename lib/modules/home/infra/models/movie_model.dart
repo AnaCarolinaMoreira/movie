@@ -7,15 +7,15 @@ import 'package:movie/modules/home/infra/models/genres_model.dart';
 import 'package:movie/modules/home/infra/models/production_companies_model.dart';
 
 class Movies extends Equatable {
-  List<Movie>? value;
+  List<Movie>? movie;
 
-  Movies({this.value});
+  Movies({this.movie});
   @override
   List<Object> get props => [];
 
   static Movies fromMap(List<Map<String, dynamic>> mapList) {
-    var transactions = mapList.map((e) => Movie.fromMap(e)).toList();
-    return Movies(value: transactions);
+    var movies = mapList.map((e) => Movie.fromMap(e)).toList();
+    return Movies(movie: movies);
   }
 }
 
@@ -24,7 +24,6 @@ class Movie extends Equatable {
   String? backdropPath;
   BelongsToCollection? belongsToCollection;
   int? budget;
-  // List<Genres>? genres;
   Genres? genres;
   String? homepage;
   int? id;
@@ -34,7 +33,6 @@ class Movie extends Equatable {
   String? overview;
   double? popularity;
   String? posterPath;
-  // List<ProductionCompanies>? productionCompanies;
   ProductionCompanies? productionCompanies;
   String? releaseDate;
   int? revenue;
@@ -43,7 +41,7 @@ class Movie extends Equatable {
   String? tagline;
   String? title;
   bool? video;
-  double? voteAverage;
+  // double? voteAverage;
   int? voteCount;
 
   Movie(
@@ -68,7 +66,7 @@ class Movie extends Equatable {
       this.tagline,
       this.title,
       this.video,
-      this.voteAverage,
+      // this.voteAverage,
       this.voteCount});
 
   @override
@@ -97,7 +95,7 @@ class Movie extends Equatable {
       'tagline': tagline,
       'title': title,
       'video': video,
-      'voteAverage': voteAverage,
+      // 'voteAverage': voteAverage,
       'voteCount': voteCount,
     };
   }
@@ -110,12 +108,12 @@ class Movie extends Equatable {
       budget: map['budget'] ?? 0,
       genres: map['genres'] != null ? Genres.fromMap(map['genres']) : null,
       homepage: map['homepage'],
-      id: map['id'],
-      imdbId: map['imdb_id'],
-      originalLanguage: map['original_language'],
-      originalTitle: map['original_title'],
-      overview: map['overview'],
-      popularity: map['popularity'],
+      id: map['id'] ?? 0,
+      imdbId: map['imdb_id'] ?? '',
+      originalLanguage: map['original_language'] ?? '',
+      originalTitle: map['original_title'] ?? '',
+      overview: map['overview'] ?? '',
+      popularity: map['popularity'] ?? 0.0,
       posterPath: map['poster_path'],
       productionCompanies: map['production_companies'] != null ? ProductionCompanies.fromMap(map['production_companies']) : null,
       releaseDate: map['release_date'],
@@ -125,7 +123,7 @@ class Movie extends Equatable {
       tagline: map['tagline'],
       title: map['title'],
       video: map['video'],
-      voteAverage: map['vote_average'],
+      // voteAverage: map['vote_average'],
       voteCount: map['vote_count'],
     );
     return movie;

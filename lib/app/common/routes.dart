@@ -1,5 +1,5 @@
 class ApiRoutes {
-  //source
+  //search
   static const String sourceMovie = "search/movie";
   //full list
   static const String listMovie = "movie/popular";
@@ -9,6 +9,6 @@ class ApiRoutes {
   static const String genres = "genre/movie/list";
   //cast movie
   static const String castMovie = "movie/{id_movie}/credits";
-  //search movie genre
-  static const String searchGenre = "discover/movie";
+  // search movies by genre
+  static const String moviesGenre = "discover/movie";
 }

@@ -10,19 +10,17 @@ class Genres extends Equatable {
   List<Object> get props => [];
 
   static Genres fromMap(List<Map<String, dynamic>> mapList) {
-    List<Genre?> values = mapList.map((e) {
-      if (e['id'] != null && e['name'] != null) return Genre.fromMap(e);
-    }).toList();
-    values.removeWhere((element) => element == null);
-    return Genres(genres: List<Genre>.from(values));
+    var genres = mapList.map((e) => Genre.fromMap(e)).toList();
+    return Genres(genres: genres);
   }
 }
 
 class Genre extends Equatable {
-  int? id;
+  int id;
   String? name;
+  bool value;
 
-  Genre({this.id, this.name});
+  Genre({required this.id, this.name, this.value = false});
 
   @override
   List<Object> get props => [];

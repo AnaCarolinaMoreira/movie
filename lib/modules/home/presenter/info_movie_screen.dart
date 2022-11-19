@@ -1,105 +1,136 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:movie/app/common/colors.dart';
 import 'package:movie/app/common/widgets/banner_widget.dart';
+import 'package:movie/modules/home/domain/errors.dart';
+import 'package:movie/modules/home/infra/models/genres_model.dart';
+import 'package:movie/modules/home/infra/models/movie_model.dart';
+import 'package:movie/modules/home/presenter/cubit/movie_cubit.dart';
+import 'package:movie/modules/home/presenter/cubit/movie_state.dart';
 
 class DetailMovieScreen extends StatefulWidget {
-  const DetailMovieScreen({super.key});
+  final Movie? movie;
+  const DetailMovieScreen({super.key, this.movie});
 
   @override
   State<DetailMovieScreen> createState() => _DetailMovieScreenState();
 }
 
 class _DetailMovieScreenState extends State<DetailMovieScreen> {
+  MovieCubit movieCubit = Modular.get<MovieCubit>();
+  List<Genre> genres = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true,
-      backgroundColor: gray08,
-      body: Container(
-        color: white,
-        child: Stack(
-          children: [
-            Container(
-              height: MediaQuery.of(context).size.height * 0.38,
-              color: gray08,
-            ),
-            SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: Column(
+        extendBody: true,
+        backgroundColor: gray08,
+        body: BlocConsumer<MovieCubit, MovieState>(
+            bloc: movieCubit,
+            listener: (context, state) async {
+              if (state is MovieErrorState) {
+                if (state.failure is MovieUnauthorizedError) {
+                  // showSessionExpiredAlert(context);
+                } else {
+                  log(state.failure.message.toString());
+                  // showErrorModal(context, state.failure.message ?? "Ops, ocorreu um erro");
+                }
+              } else if (state is MovieSuccessState && state.genres != null) {
+                setState(() {
+                  genres = state.genres!.genres ?? [];
+                  movieCubit.cleanState();
+                });
+              }
+            },
+            builder: ((context, state) {
+              if (state is MovieLoadingState) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              return Container(
+                color: white,
+                child: Stack(
                   children: [
-                    SafeArea(child: Align(alignment: Alignment.topLeft, child: bottom())),
-                    banner(isSmall: true, context: context, title: "marvel", gender: "acao", image: "assets/images/marvel.jpg"),
-                    const SizedBox(height: 32),
-                    RichText(
-                      text: TextSpan(
-                        style: const TextStyle(fontFamily: 'Montserrat'),
-                        children: <TextSpan>[
-                          TextSpan(text: '7.3', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24, color: inside)),
-                          TextSpan(text: '/ 10', style: TextStyle(color: gray03)),
-                        ],
-                      ),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.38,
+                      color: gray08,
                     ),
-                    const SizedBox(height: 32),
-                    Text(
-                      'CAPITÃ MARVEL',
-                      style: TextStyle(color: gray01, fontFamily: 'Montserrat', fontSize: 14, fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(height: 12),
-                    RichText(
-                      text: TextSpan(
-                        style: TextStyle(
-                          color: gray02,
-                          fontFamily: 'Montserrat',
-                          fontSize: 10,
-                          fontWeight: FontWeight.w400,
+                    SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: Column(
+                          children: [
+                            SafeArea(child: Align(alignment: Alignment.topLeft, child: bottom())),
+                            banner(isSmall: true, context: context, movie: widget.movie!),
+                            const SizedBox(height: 32),
+                            RichText(
+                              text: TextSpan(
+                                style: const TextStyle(fontFamily: 'Montserrat'),
+                                children: <TextSpan>[
+                                  TextSpan(text: '7.3', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24, color: inside)),
+                                  TextSpan(text: '/ 10', style: TextStyle(color: gray03)),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 32),
+                            Text(
+                              widget.movie?.title ?? '',
+                              style: TextStyle(color: gray01, fontFamily: 'Montserrat', fontSize: 14, fontWeight: FontWeight.w600),
+                            ),
+                            const SizedBox(height: 12),
+                            RichText(
+                              text: TextSpan(
+                                style: TextStyle(
+                                  color: gray02,
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                children: <TextSpan>[
+                                  const TextSpan(text: 'TÍTULO ORIGINAL: '),
+                                  TextSpan(text: widget.movie?.originalTitle ?? '', style: const TextStyle(fontWeight: FontWeight.w500)),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 32),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                movieInfoCard(title: "Ano", subtitle: widget.movie?.releaseDate ?? ''),
+                                movieInfoCard(title: "Duração", subtitle: '1h 20 min'),
+                              ],
+                            ),
+                            const SizedBox(height: 12),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                movieGenreCard(title: "Ação"),
+                                movieGenreCard(title: "Aventura"),
+                                movieGenreCard(title: "Sci-fi"),
+                              ],
+                            ),
+                            const SizedBox(height: 56),
+                            descriptionCard(title: 'Descricao', subtitle: widget.movie?.overview ?? ''),
+                            const SizedBox(height: 40),
+                            movieInfoCard(title: "ORÇAMENTO:", subtitle: '\$ 152,000,000'),
+                            movieInfoCard(title: "PRODUTORAS: ", subtitle: 'MARVEL STUDIOS'),
+                            const SizedBox(height: 40),
+                            descriptionCard(title: 'Diretor', subtitle: "Ryan Fleck, Anna Boden"),
+                            const SizedBox(height: 32),
+                            descriptionCard(title: 'Elenco', subtitle: "Brie Larson, Samuel L. Jackson, Ben Mendelsohn, Djimon Hounsou, Lee Pace"),
+                            const SizedBox(height: 56),
+                          ],
                         ),
-                        children: const <TextSpan>[
-                          TextSpan(text: 'TÍTULO ORIGINAL: '),
-                          TextSpan(text: 'Captain Marvel', style: TextStyle(fontWeight: FontWeight.w500)),
-                        ],
                       ),
                     ),
-                    const SizedBox(height: 32),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        movieInfoCard(title: "Ano", subtitle: '2019'),
-                        movieInfoCard(title: "Duração", subtitle: '1h 20 min'),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        movieGenreCard(title: "Ação"),
-                        movieGenreCard(title: "Aventura"),
-                        movieGenreCard(title: "Sci-fi"),
-                      ],
-                    ),
-                    const SizedBox(height: 56),
-                    descriptionCard(
-                        title: 'Descricao',
-                        subtitle:
-                            'Aventura sobre Carol Danvers, uma agente da CIA que tem contato com uma raça alienígena e ganha poderes sobre-humanos. Entre os seus poderes estão uma força fora do comum e a habilidade de voar.'),
-                    const SizedBox(height: 40),
-                    movieInfoCard(title: "ORÇAMENTO:", subtitle: '\$ 152,000,000'),
-                    movieInfoCard(title: "PRODUTORAS: ", subtitle: 'MARVEL STUDIOS'),
-                    const SizedBox(height: 40),
-                    descriptionCard(title: 'Diretor', subtitle: "Ryan Fleck, Anna Boden"),
-                    const SizedBox(height: 32),
-                    descriptionCard(title: 'Elenco', subtitle: "Brie Larson, Samuel L. Jackson, Ben Mendelsohn, Djimon Hounsou, Lee Pace"),
-                    const SizedBox(height: 56),
                   ],
                 ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+              );
+            })));
   }
 
   Widget movieGenreCard({required String title}) {

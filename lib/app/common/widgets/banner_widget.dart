@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:movie/app/common/colors.dart';
+import 'package:movie/modules/home/infra/models/movie_model.dart';
 import 'package:movie/modules/home/presenter/info_movie_screen.dart';
 
-Widget banner({required String title, required String gender, required image, required BuildContext context, bool isSmall = false}) {
+Widget banner({required Movie movie, required BuildContext context, bool isSmall = false}) {
   return InkWell(
     onTap: (() => {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const DetailMovieScreen()),
+            MaterialPageRoute(builder: (context) => DetailMovieScreen(movie: movie)),
           )
         }),
     child: Container(
@@ -16,9 +17,7 @@ Widget banner({required String title, required String gender, required image, re
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25),
         image: DecorationImage(
-          image: AssetImage(
-            image,
-          ),
+          image: NetworkImage('https://image.tmdb.org/t/p/original/${movie.posterPath}'),
           fit: BoxFit.cover,
           alignment: FractionalOffset.bottomCenter,
         ),
@@ -57,13 +56,13 @@ Widget banner({required String title, required String gender, required image, re
                 padding: const EdgeInsets.only(left: 24, bottom: 32),
                 child: Column(mainAxisAlignment: MainAxisAlignment.end, crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Text(
-                    title,
+                    movie.title ?? '',
                     style: TextStyle(color: white, fontFamily: 'Montserrat', fontSize: 14, fontWeight: FontWeight.w600),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
                     child: Text(
-                      gender,
+                      movie.genres?.genres?.first.name ?? '',
                       style: TextStyle(color: white, fontFamily: 'Montserrat', fontSize: 10, fontWeight: FontWeight.w400),
                     ),
                   )

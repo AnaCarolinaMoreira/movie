@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:movie/modules/home/domain/errors.dart';
 import 'package:movie/modules/home/infra/models/genres_model.dart';
+import 'package:movie/modules/home/infra/models/movie_model.dart';
 
 abstract class MovieState extends Equatable {}
 
@@ -16,8 +17,13 @@ class MovieLoadingState extends MovieState {
 
 class MovieSuccessState extends MovieState {
   final Genres? genres;
+  final Movies? movies;
+  final List<String>? selectedIdGenrer;
+
   MovieSuccessState({
     required this.genres,
+    required this.movies,
+    required this.selectedIdGenrer,
   });
   @override
   List<Object> get props => [];

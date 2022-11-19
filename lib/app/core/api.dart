@@ -31,11 +31,10 @@ class Api {
   static String language = "&language=pt-BR";
   Api();
 
-  Future<Response?> getApi(String apiName, String endpoint, {bool useAuth = true}) async {
+  Future<Response?> getApi(String apiName, String endpoint, {String parameters = '', bool useAuth = true}) async {
     if (useAuth) {
-      //TODO:removed null
       if (token == null) throw Exception('Authentication not performed yet.');
-      var json = await tryToMakeRequest(RequestMethod.GET, apiName + endpoint + apiKey + language);
+      var json = await tryToMakeRequest(RequestMethod.GET, apiName + endpoint + apiKey + language + parameters);
       return json;
     } else {
       var json = await tryToMakeRequest(RequestMethod.GET, apiName + endpoint, headers: getDefaultHeaders(withToken: false));
