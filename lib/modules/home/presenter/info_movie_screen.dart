@@ -123,6 +123,7 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
                             const SizedBox(height: 32),
                             descriptionCard(title: 'Elenco', subtitle: "Brie Larson, Samuel L. Jackson, Ben Mendelsohn, Djimon Hounsou, Lee Pace"),
                             const SizedBox(height: 56),
+                            //flutter 3.3.7
                           ],
                         ),
                       ),
